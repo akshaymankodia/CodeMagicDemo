@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:937141758858:android:de2d6a78527a51576db673",
         "android_client_info": {
-          "package_name": "com.example.codemagic_demo"
+          "package_name": "com.example.codemagic_demo.dev"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "937141758858-1tm1u4ujrumb3jmr052dcslpnalfpk0d.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.codemagic_demo",
+            "package_name": "com.example.codemagic_demo.dev",
             "certificate_hash": "96fc7341fff392decbe740d050908e394c8e7d79"
           }
         },
