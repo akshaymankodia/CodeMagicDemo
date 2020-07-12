@@ -1,32 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:codemagic_demo/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './config_reader.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter CI with Codemagic',
-      theme: ThemeData(
-        primarySwatch: Provider.of<Color>(context),
-      ),
-      home: MyHomePage(title: 'Flutter CI with Codemagic'),
-    );
-  }
-}
-
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   int _counter = 0;
+  bool loading = false;
+  TextEditingController _controller = TextEditingController();
 
   void _incrementCounter() {
     setState(() {
@@ -38,12 +26,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(AppConfig.of(context).appTitle),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text("You are running ${AppConfig.of(context).buildFlavor} flavor"),
             Text(
               'You have pushed the button this many times:',
             ),
@@ -51,10 +40,14 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            Text(
-              'Revealed secret:\n${ConfigReader.getSecretKey()}',
-              textAlign: TextAlign.center,
+            loading ? CircularProgressIndicator() : Container(),
+            TextField(
+              controller: _controller,
             ),
+            RaisedButton(
+              child: Text("Add to Firestore"),
+              onPressed: _addToFirestore,
+            )
           ],
         ),
       ),
@@ -62,7 +55,19 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ),
+      ), 
     );
+  }
+
+  _addToFirestore() async {
+    if(_controller.text.isEmpty) return;
+    setState(() {
+      loading = true;
+    });
+    await Firestore.instance.collection('mycoll').add({"string": _controller.text});
+    _controller.text = "";
+    setState(() {
+      loading = false;
+    });
   }
 }

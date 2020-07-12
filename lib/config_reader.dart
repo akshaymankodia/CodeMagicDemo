@@ -12,8 +12,4 @@ abstract class ConfigReader {
   static int getIncrementAmount() {
     return _config['incrementAmount'] as int;
   }
-
-  static String getSecretKey() {
-    return _config['secretKey'] as String;
-  }
 }
