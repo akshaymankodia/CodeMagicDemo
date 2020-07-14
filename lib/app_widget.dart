@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codemagic_demo/app_config.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import './config_reader.dart';
 
