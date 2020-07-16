@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codemagic_demo/app_config.dart';
+import 'package:codemagic_demo/environment.dart';
 import 'package:flutter/material.dart';
 
 import './config_reader.dart';
@@ -10,14 +11,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   int _counter = 0;
   bool loading = false;
   TextEditingController _controller = TextEditingController();
 
   void _incrementCounter() {
     setState(() {
-      _counter += ConfigReader.getIncrementAmount();
+      
+      if (AppConfig.of(context).buildFlavor == 'Development') {
+        _counter += ConfigReader.getDevIncrementAmount();
+      }else if(AppConfig.of(context).buildFlavor == 'Production'){
+        _counter += ConfigReader.getProdIncrementAmount();
+      }
     });
   }
 
@@ -54,16 +59,18 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), 
+      ),
     );
   }
 
   _addToFirestore() async {
-    if(_controller.text.isEmpty) return;
+    if (_controller.text.isEmpty) return;
     setState(() {
       loading = true;
     });
-    await Firestore.instance.collection('mycoll').add({"string": _controller.text});
+    await Firestore.instance
+        .collection('mycoll')
+        .add({"string": _controller.text});
     _controller.text = "";
     setState(() {
       loading = false;

@@ -9,7 +9,11 @@ abstract class ConfigReader {
     _config = json.decode(configString) as Map<String, dynamic>;
   }
 
-  static int getIncrementAmount() {
-    return _config['incrementAmount'] as int;
+  static int getDevIncrementAmount() {
+    return _config['incrementAmountDev'] as int;
+  }
+
+  static int getProdIncrementAmount() {
+    return _config['incrementAmountProd'] as int;
   }
 }
