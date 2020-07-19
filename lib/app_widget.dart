@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codemagic_demo/app_config.dart';
-import 'package:codemagic_demo/environment.dart';
 import 'package:flutter/material.dart';
 
 import './config_reader.dart';
